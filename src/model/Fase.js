@@ -1,0 +1,7 @@
+const FASE = {
+    PREPARACION: "PREPARACION",
+    COMBATE: "COMBATE",
+    FINALIZADA: "FINALIZADA"
+}
+
+export default FASE;
