@@ -1,0 +1,15 @@
+.gray {
+    background-color: #ccc;
+}
+
+.yellow {
+    background-color: #ff0;
+}
+
+.white {
+    background-color: #fff;
+}
+
+.clickeable {
+    cursor: pointer;
+}

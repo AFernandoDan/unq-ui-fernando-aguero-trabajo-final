@@ -1,0 +1,75 @@
+.resultado-disparo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    z-index: 100;
+}
+
+.resultado-disparo > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+    min-width: 10rem;
+}
+
+.agua > div{
+    background-color: #6ba9e0 !important;
+    border-color: deepskyblue !important;
+    color: aqua !important;
+}
+
+.agua > div::after{
+    content: "\1F30A";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    top : 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: deepskyblue;    
+}
+
+.tocado > div {
+    background-color: rgb(243, 243, 167) !important;
+    border-color: orange !important;
+    color: goldenrod !important;
+}
+
+.tocado > div::after {
+    content: "🎯";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    top : 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: orange;    
+}
+
+.hundido > div {
+    background-color: rgb(243, 167, 167) !important;
+    border-color: crimson !important;
+    color: crimson !important;
+}
+
+.hundido > div::after {
+    content: "\1F4A5";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    top : 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: crimson;    
+}

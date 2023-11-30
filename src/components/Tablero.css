@@ -1,0 +1,6 @@
+.tablero {
+    display: grid;
+    grid-template-columns: repeat(10, 4rem);
+    grid-template-rows: repeat(10, 4rem);
+    gap: 1rem;
+}

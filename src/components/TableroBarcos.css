@@ -1,0 +1,24 @@
+.agua {
+    background-color: #ccc;
+}
+
+.barco {
+    background-color: crimson;
+    position: relative;
+}
+
+.barco.tocado::after{
+    content: "";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    top : 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: orange;    
+}
+
+.tablero.preparacion > div {
+    cursor: pointer;
+}

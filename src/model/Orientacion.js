@@ -1,6 +1,6 @@
 const ORITENTACION = {
-    VERTICAL: 'HORIZONTAL',
-    HORIZONTAL: 'HORIZONTAL'
+    VERTICAL: 'Vertical',
+    HORIZONTAL: 'Horizontal'
 }
 
 export default ORITENTACION;
