@@ -3,12 +3,17 @@ import TIPO_CASILLA from '../model/tipoCasilla'
 import "./Tablero.css"
 import "./TableroBarcos.css"
 
-const TableroBarcos = ({tableroBarcos, colocarBarco, setError}) => {
+const baseClass = "tablero "
+const TableroBarcos = ({tableroBarcos, colocarBarco, setError, jugador, puedeColocarBarcos}) => {
 
-  const getCasillaClass = (casilla) => 
-    (casilla.tipoCasilla === TIPO_CASILLA.BARCO ? "barco " : "agua ") + (casilla.tocado ? "tocado" : "")
+    const disabled = !puedeColocarBarcos(jugador)
+    const tableroClassName = disabled ? baseClass : baseClass + "preparacion"
+
+    const getCasillaClass = (casilla) => 
+        (casilla.tipoCasilla === TIPO_CASILLA.BARCO ? "barco " : "agua ") + (casilla.tocado ? "tocado" : "")
 
     const handleClickCasilla = (i, j) => {
+        if (disabled) return
         try {
             colocarBarco(i, j)
         } catch (error) {
@@ -19,7 +24,7 @@ const TableroBarcos = ({tableroBarcos, colocarBarco, setError}) => {
   return (
     <div>
         <h3>Tablero Barcos</h3>
-        <div className="tablero preparacion">
+        <div className={tableroClassName}>
             {tableroBarcos.map((fila, i) => (
                 fila.map((casilla, j) => (
                     <div key={j} className={`casilla ${getCasillaClass(casilla)}`} onClick={() => handleClickCasilla(i,j)}></div>

@@ -1,6 +1,6 @@
 import TableroDisparable from "./TableroDisparable"
 import JUGADOR from "../model/jugador"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import FASE from "../model/Fase"
 import ResultadoDisparo from "./ResultadoDisparo"
 import TableroBarcos from "./TableroBarcos"
@@ -10,14 +10,16 @@ import Alert from "./Alert"
 import BotonListo from "./BotonListo"
 import useTableroDisparable from "../hooks/useTableroDisparable"
 import useTableroBarcos from "../hooks/useTableroBarcos"
+import Inicio from "./Inicio"
+import ORIENTACION from "../model/Orientacion"
 
 
 
 const Partida = () => {
     const [ganador, setGanador] = useState(null)
-    const [turno, setTurno] = useState(JUGADOR.LOCAL)
+    const [turno, setTurno] = useState(null)
     const [resultadoDisparo, setResultadoDisparo] = useState(null)
-    const [fase, setFase] = useState(FASE.PREPARACION)
+    const [fase, setFase] = useState(FASE.IDLE)
     const [error, setError] = useState(null)
 
     const [
@@ -28,10 +30,11 @@ const Partida = () => {
         barcoSeleccionadoLocal, 
         setBarcoSeleccionadoLocal, 
         orientacion, 
-        setOrientacion] 
-        = useTableroBarcos()
+        setOrientacion,
+        reiniciarTableroBarcosLocal
+    ] = useTableroBarcos()
 
-    const {
+    const [
         colocarBarcoRival, 
         tableroBarcosRival, 
         setTableroBarcosRival,
@@ -39,33 +42,121 @@ const Partida = () => {
         barcoSeleccionadoRival, 
         setBarcoSeleccionadoRival, 
         orientacionRival, 
-        setOrientacionRival
-    } = useTableroBarcos()
+        setOrientacionRival,
+        reiniciarTableroBarcosRival
+    ] = useTableroBarcos()
 
-    const {tablero: tableroMarcaLocal, disparar: dispararLocal} = useTableroDisparable(tableroBarcosLocal, setTableroBarcosLocal)
-    const {tablero: tableroMarcaRival, disparar: dispararRival} = useTableroDisparable(tableroBarcosLocal, setTableroBarcosLocal)
+    const listo = (barcos, jugador) => {
+        if (barcos.some(barco => !barco.colocado))
+            throw new Error("No se han colocado todos los barcos")
+        if (fase !== FASE.PREPARACION)
+            throw new Error("La partida ya ha comenzado o ha finalizado")
+        if (turno) setFase(FASE.COMBATE)
+        else setTurno(jugador)
+    }
+
+    const puedeMoverColocarBarcos = (jugador) => fase === FASE.PREPARACION && turno !== jugador
+
+    const [tableroMarcaLocal, dispararLocal, reiniciarTableroMarcaLocal] = useTableroDisparable(tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo)
+    const [tableroMarcaRival, dispararRival, reiniciarTableroMarcaRival] = useTableroDisparable(tableroBarcosLocal, setTableroBarcosLocal, setResultadoDisparo)
+
+    const getRandomPosValida = (barco, orientacion) => {
+        let maxdDelLadoOrientado = Math.floor(Math.random() * (9 - barco.longitud))
+        let maxdDelLadoNoOrientado = Math.floor(Math.random() * 10)
+
+        return orientacion === ORIENTACION.HORIZONTAL 
+            ? {x: Math.floor(maxdDelLadoOrientado), y: Math.floor(maxdDelLadoNoOrientado)} 
+            : {x: Math.floor(maxdDelLadoNoOrientado), y: Math.floor(maxdDelLadoOrientado)}
+    }
+
+    const intentarColocarBarcoEnPosRandom = (barco, orientacion, colocarBarco) => {
+        let {x,y} = getRandomPosValida(barco, orientacion)
+        try {
+            colocarBarco(x, y)
+            return true
+        } catch (error) {
+            return false
+        }
+    }
+
+    useEffect(() => {
+        if (tableroBarcosRival && barcosRival && fase === FASE.PREPARACION && barcosRival.some(barco => !barco.colocado)) {
+            const barco = barcosRival.find(barco => !barco.colocado)
+            setBarcoSeleccionadoRival(barco)
+        }
+    }, [tableroBarcosRival, fase, barcosRival])
+
+    useEffect(() => {
+        if (tableroBarcosRival && barcosRival && fase === FASE.PREPARACION && barcosRival.some(barco => !barco.colocado)) {
+            const colocarBarcoRandom = (colocarBarco, setOrientacion) => {
+                let seColoco = false
+                while (!seColoco) {
+                    let orientacion = Math.floor(Math.random() * 2) === 0 ? ORIENTACION.HORIZONTAL : ORIENTACION.VERTICAL
+                    setOrientacion(orientacion)
+                    seColoco = intentarColocarBarcoEnPosRandom(barcoSeleccionadoRival, orientacion, colocarBarco)
+                }
+            }
+
+            setTimeout(() => {
+                colocarBarcoRandom(colocarBarcoRival, setOrientacionRival)
+            }, 5000);
+        }
+    }, [barcoSeleccionadoRival, colocarBarcoRival, setOrientacionRival])
+
+    useEffect(() => {
+        console.log(barcoSeleccionadoRival)
+    }, [barcoSeleccionadoRival])
+
+    const iniciarPartida = () => {
+        setFase(FASE.PREPARACION)
+        setGanador(null)
+        setTurno(null)
+        setResultadoDisparo(null)
+        setError(null)
+        reiniciarTableroMarcaLocal()
+        reiniciarTableroMarcaRival()
+        reiniciarTableroBarcosLocal()
+        reiniciarTableroBarcosRival()
+    }
+
+    const irAlInicio = () => {
+        setFase(FASE.IDLE)
+    }
+
 
     return (<div>
-        <h2>Partida: {fase}</h2>
-        <div>Tablero Marcable Jugador 1</div>
         <Alert message={error} setMessage={setError} error />
-        <ResultadoDisparo resultadoDisparo={resultadoDisparo} setResultadoDisparo={setResultadoDisparo} />
-        <TableroDisparable
-            tablero={tableroMarcaLocal}
-            disparar={dispararLocal}
-            setResultadoDisparo={setResultadoDisparo}
-            />
-        <SelectorBarco 
-            barcos={barcosLocal}
-            setBarcoSeleccionado={setBarcoSeleccionadoLocal}
-            barcoSeleccionado={barcoSeleccionadoLocal} />
-        <SelectorOrientacion orientacion={orientacion} setOrientacion={setOrientacion} />
-        <BotonListo barcos={barcosLocal} setFase={setFase} fase={fase} />
-        <TableroBarcos 
-            setError={setError}
-            colocarBarco={colocarBarcoLocal}
-            tableroBarcos={tableroBarcosLocal}
-            />
+        {fase === FASE.IDLE && <Inicio iniciarPartida={iniciarPartida} />}
+        {fase !== FASE.IDLE && <h2>Partida: [fase: {fase}, turno: {turno}, ganador: {JSON.stringify(ganador)}]</h2>}
+        {fase === FASE.PREPARACION && <>
+            <ResultadoDisparo resultadoDisparo={resultadoDisparo} setResultadoDisparo={setResultadoDisparo} />
+            <SelectorBarco 
+                barcos={barcosLocal}
+                setBarcoSeleccionado={setBarcoSeleccionadoLocal}
+                barcoSeleccionado={barcoSeleccionadoLocal} />
+            <SelectorOrientacion orientacion={orientacion} setOrientacion={setOrientacion} />
+            <BotonListo listo={listo} fase={fase} jugador={JUGADOR.LOCAL} barcos={barcosLocal} turno={turno} />
+            <TableroBarcos 
+                setError={setError}
+                colocarBarco={colocarBarcoLocal}
+                tableroBarcos={tableroBarcosLocal}
+                jugador={JUGADOR.LOCAL}
+                puedeColocarBarcos={puedeMoverColocarBarcos}
+                />
+            <TableroBarcos
+                setError={setError}
+                colocarBarco={colocarBarcoRival}
+                tableroBarcos={tableroBarcosRival}
+                jugador={JUGADOR.PC}
+                puedeColocarBarcos={puedeMoverColocarBarcos}
+                />
+        </>}
+        {fase === FASE.COMBATE && <>
+            <TableroDisparable
+                tablero={tableroMarcaLocal}
+                disparar={dispararLocal}
+                />
+        </>}
     </div>)
 }
 

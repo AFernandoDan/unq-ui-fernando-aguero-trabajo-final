@@ -18,6 +18,13 @@ const useTableroBarcos = () => {
     const [tableroBarcos, setTableroBarcos] = useState(tableroBarcosInicial)
     const [orientacion, setOrientacion] = useState(ORIENTACION.HORIZONTAL)
 
+    const reiniciar = () => {
+        setBarcos(barcosIniciales)
+        setBarcoSeleccionado(barcosIniciales[0])
+        setTableroBarcos(tableroBarcosInicial)
+        setOrientacion(ORIENTACION.HORIZONTAL)
+    }
+
     const colocarBarco = (i, j) => {
         const nuevoTablero = [...tableroBarcos]
     
@@ -25,6 +32,8 @@ const useTableroBarcos = () => {
         if ((orientacion === ORIENTACION.HORIZONTAL && j + barcoSeleccionado.longitud > nuevoTablero[0].length) ||
             (i + barcoSeleccionado.longitud > nuevoTablero.length))
             throw new Error('El barco no cabe en el tablero')
+
+        console.log('barcoSeleccionado', barcoSeleccionado.tipoBarco, "entra en el tablero")
 
         // quita los barcos que ya estan colocados con el mismo tipo
         // reemplazando por agua
@@ -44,20 +53,23 @@ const useTableroBarcos = () => {
                 throw new Error(`Hay un ${nuevoTablero[i][j + k].tipoBarco} en (${i}, ${j + k})`)
         }
     
-        // Colocar el barco en el tablero
-        for (let k = 0; k < barcoSeleccionado.longitud; k++) {
-            let barcoAColocar = {...barcoSeleccionado, tipoCasilla: TIPO_CASILLA.BARCO, tocado: false}
+        marcarBarcoColocado(barcoSeleccionado, barcos, setBarcos, setBarcoSeleccionado)
+        setTableroBarcos([...colocarBarcoCuandoSePuede(barcoSeleccionado, i, j, orientacion, nuevoTablero)])
+    }
+
+    const colocarBarcoCuandoSePuede = (barco, i, j, orientacion, tablero) => {
+        for (let k = 0; k < barco.longitud; k++) {
+            let barcoAColocar = {...barco, tipoCasilla: TIPO_CASILLA.BARCO, tocado: false}
             if (orientacion === ORIENTACION.HORIZONTAL) {
-                nuevoTablero[i] = [...nuevoTablero[i]]
-                nuevoTablero[i][j + k] = barcoAColocar
+                tablero[i] = [...tablero[i]]
+                tablero[i][j + k] = barcoAColocar
             } else { // ORIENTACION.VERTICAL
-                nuevoTablero[i + k] = [...nuevoTablero[i + k]]
-                nuevoTablero[i + k][j] = barcoAColocar
+                tablero[i + k] = [...tablero[i + k]]
+                tablero[i + k][j] = barcoAColocar
             }
         }
-    
-        marcarBarcoColocado(barcoSeleccionado, barcos, setBarcos, setBarcoSeleccionado)
-        setTableroBarcos(nuevoTablero)
+
+        return tablero
     }
     
     const marcarBarcoColocado = (barcoSeleccionado, barcos, setBarcos, setBarcoSeleccionado) => {
@@ -70,9 +82,19 @@ const useTableroBarcos = () => {
         setBarcos(barcosActualizados)
         const barcoSeleccionadoActualizado = barcosActualizados.find(barco => barcoSeleccionado.tipoBarco === barco.tipoBarco)
         setBarcoSeleccionado(barcoSeleccionadoActualizado)
-    }
+    }  
 
-    return [colocarBarco, tableroBarcos, setTableroBarcos, barcos, barcoSeleccionado, setBarcoSeleccionado, orientacion, setOrientacion]
+    return [
+        colocarBarco, 
+        tableroBarcos, 
+        setTableroBarcos, 
+        barcos, 
+        barcoSeleccionado, 
+        setBarcoSeleccionado, 
+        orientacion, 
+        setOrientacion,
+        reiniciar
+    ]
 }
 
 export default useTableroBarcos

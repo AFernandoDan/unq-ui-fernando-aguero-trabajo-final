@@ -5,9 +5,11 @@ import TIPO_CASILLA from "../model/tipoCasilla"
 
 const tableroMarcasInicial = Array(10).fill(Array(10).fill(ANOTADOR.VACIO))
 
-const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival) => {
+const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo) => {
 
     const [tablero, setTablero] = useState(tableroMarcasInicial)
+
+    const reiniciar = () => setTablero(tableroMarcasInicial)
 
     const disparar = (i, j) => {
         if (tablero[i][j] !== ANOTADOR.VACIO) return
@@ -36,6 +38,7 @@ const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival) => {
         setTableroBarcosRival(nuevoTablero)
         const marcador = resultadoDisparo === RESULTADO_DISPARO.AGUA ? ANOTADOR.BLANCO : ANOTADOR.AMARILLO
         handleMarcar(i, j, marcador)
+        setResultadoDisparo(resultadoDisparo)
         return resultadoDisparo
     }
 
@@ -45,7 +48,7 @@ const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival) => {
         setTablero(nuevoTablero)
     }
 
-    return {tablero, disparar}
+    return [tablero, disparar, reiniciar]
 }
 
 export default useTableroDisparable
