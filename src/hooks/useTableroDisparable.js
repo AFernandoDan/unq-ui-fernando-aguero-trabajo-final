@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import ANOTADOR from "../model/Anotador"
 import RESULTADO_DISPARO from "../model/resultadoDisparo"
 import TIPO_CASILLA from "../model/tipoCasilla"
@@ -38,7 +38,7 @@ const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival, setResu
         setTableroBarcosRival(nuevoTablero)
         const marcador = resultadoDisparo === RESULTADO_DISPARO.AGUA ? ANOTADOR.BLANCO : ANOTADOR.AMARILLO
         handleMarcar(i, j, marcador)
-        setResultadoDisparo(resultadoDisparo)
+        setResultadoDisparo({resultado: resultadoDisparo, posicion: {x: j, y: i}})
         return resultadoDisparo
     }
 

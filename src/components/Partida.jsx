@@ -57,8 +57,18 @@ const Partida = () => {
 
     const puedeMoverColocarBarcos = (jugador) => fase === FASE.PREPARACION && turno !== jugador
 
-    const [tableroMarcaLocal, dispararLocal, reiniciarTableroMarcaLocal] = useTableroDisparable(tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo)
-    const [tableroMarcaRival, dispararRival, reiniciarTableroMarcaRival] = useTableroDisparable(tableroBarcosLocal, setTableroBarcosLocal, setResultadoDisparo)
+    const [
+        tableroMarcaLocal, 
+        dispararLocal, 
+        reiniciarTableroMarcaLocal] 
+        = useTableroDisparable(tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo)
+    
+    const [
+        tableroMarcaRival, 
+        dispararRival, 
+        reiniciarTableroMarcaRival
+    ]
+        = useTableroDisparable(tableroBarcosLocal, setTableroBarcosLocal, setResultadoDisparo)
 
     const getRandomPosValida = (barco, orientacion) => {
         let maxdDelLadoOrientado = Math.floor(Math.random() * (9 - barco.longitud))
@@ -79,13 +89,14 @@ const Partida = () => {
         }
     }
 
+    // cuando se coloca un barco, se selecciona el siguiente barco
     useEffect(() => {
-        if (tableroBarcosRival && barcosRival && fase === FASE.PREPARACION && barcosRival.some(barco => !barco.colocado)) {
-            const barco = barcosRival.find(barco => !barco.colocado)
-            setBarcoSeleccionadoRival(barco)
+        if (barcosRival && barcosRival.some(barco => !barco.colocado)) {
+            setBarcoSeleccionadoRival(barcosRival.find(barco => !barco.colocado))
         }
-    }, [tableroBarcosRival, fase, barcosRival])
+    }, [barcosRival])
 
+    // cuando se selecciona un barco, se intenta colocar en una posicion random
     useEffect(() => {
         if (tableroBarcosRival && barcosRival && fase === FASE.PREPARACION && barcosRival.some(barco => !barco.colocado)) {
             const colocarBarcoRandom = (colocarBarco, setOrientacion) => {
@@ -97,21 +108,25 @@ const Partida = () => {
                 }
             }
 
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 colocarBarcoRandom(colocarBarcoRival, setOrientacionRival)
-            }, 5000);
+            }, Math.floor(Math.random() * 7) + 3000);
+            return () => clearTimeout(timeout)
         }
     }, [barcoSeleccionadoRival, colocarBarcoRival, setOrientacionRival])
 
+    // cuando la partida esta en preparacion la pc espera de 15s a 60s para poner listo
     useEffect(() => {
-        console.log(barcoSeleccionadoRival)
-    }, [barcoSeleccionadoRival])
+            if (fase !== FASE.PREPARACION || !barcosRival || barcosRival.some(barco => !barco.colocado)) return
+            listo(barcosRival, JUGADOR.PC)
+    }, [fase, barcosRival])
+
 
     const iniciarPartida = () => {
         setFase(FASE.PREPARACION)
         setGanador(null)
         setTurno(null)
-        setResultadoDisparo(null)
+        setResultadoDisparo()
         setError(null)
         reiniciarTableroMarcaLocal()
         reiniciarTableroMarcaRival()
@@ -123,13 +138,12 @@ const Partida = () => {
         setFase(FASE.IDLE)
     }
 
-
     return (<div>
         <Alert message={error} setMessage={setError} error />
+        <ResultadoDisparo resultadoDisparo={resultadoDisparo} setResultadoDisparo={setResultadoDisparo} turno={turno} />
         {fase === FASE.IDLE && <Inicio iniciarPartida={iniciarPartida} />}
         {fase !== FASE.IDLE && <h2>Partida: [fase: {fase}, turno: {turno}, ganador: {JSON.stringify(ganador)}]</h2>}
         {fase === FASE.PREPARACION && <>
-            <ResultadoDisparo resultadoDisparo={resultadoDisparo} setResultadoDisparo={setResultadoDisparo} />
             <SelectorBarco 
                 barcos={barcosLocal}
                 setBarcoSeleccionado={setBarcoSeleccionadoLocal}

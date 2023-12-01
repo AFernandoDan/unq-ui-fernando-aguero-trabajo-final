@@ -2,7 +2,7 @@ import "./TableroDisparable.css"
 import "./Tablero.css"
 import ANOTADOR from "../model/Anotador"
 
-const TableroDisparable = ({tablero, disparar, setResultadoDisparo}) => {
+const TableroDisparable = ({tablero, disparar}) => {
 
     const getColorCasilla = (casilla) => {
         if (casilla === ANOTADOR.AMARILLO) return "yellow"
@@ -15,7 +15,7 @@ const TableroDisparable = ({tablero, disparar, setResultadoDisparo}) => {
     const getCasillaClass = (casilla) => `${getColorCasilla(casilla)} casilla ${getClickeableClass(casilla)}`
 
     const handleDispararCasilla = (i, j) => {
-        setResultadoDisparo({resultado: disparar(i,j), posicion: {x: i, y: j}})
+        disparar(i, j)
     }
 
     return (

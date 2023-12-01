@@ -33,8 +33,6 @@ const useTableroBarcos = () => {
             (i + barcoSeleccionado.longitud > nuevoTablero.length))
             throw new Error('El barco no cabe en el tablero')
 
-        console.log('barcoSeleccionado', barcoSeleccionado.tipoBarco, "entra en el tablero")
-
         // quita los barcos que ya estan colocados con el mismo tipo
         // reemplazando por agua
         for (let k = 0; k < nuevoTablero.length; k++) {
