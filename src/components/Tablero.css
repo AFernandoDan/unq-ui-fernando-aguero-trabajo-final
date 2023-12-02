@@ -1,6 +1,14 @@
 .tablero {
     display: grid;
-    grid-template-columns: repeat(10, 4rem);
-    grid-template-rows: repeat(10, 4rem);
+    grid-template-columns: repeat(10, 2.5rem);
+    grid-template-rows: repeat(10, 2.5rem);
     gap: 1rem;
+    margin: 2rem;
+}
+
+.tableros {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: auto;
 }

@@ -7,7 +7,7 @@ const Alert = ({ message, setMessage, error, info, success }) => {
         if (message) {
             const timer = setTimeout(() => {
                 setMessage(null);
-            }, 3000);
+            }, 2500);
             return () => clearTimeout(timer);
         }
     }, [message, setMessage]);

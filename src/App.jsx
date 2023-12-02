@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <main>
-        <h1> BATALLA NAVAL </h1>
+        <h1>⚓ BATALLA NAVAL ⚓</h1>
           <Partida />
       </main>
     </>

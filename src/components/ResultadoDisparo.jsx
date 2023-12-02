@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import "./ResultadoDisparo.css"
 import RESULTADO_DISPARO from '../model/resultadoDisparo'
+import JUGADOR from '../model/jugador'
 
 const ResultadoDisparo = ({resultadoDisparo, setResultadoDisparo}) => {
 
@@ -8,11 +9,12 @@ const ResultadoDisparo = ({resultadoDisparo, setResultadoDisparo}) => {
         if (!resultadoDisparo) return
         const timeout = setTimeout(() => {
             setResultadoDisparo(null)
-        }, 1000)
+        }, resultadoDisparo.turno === JUGADOR.LOCAL ? 1200 : 2500)
         return () => clearTimeout(timeout)
     }, [resultadoDisparo, setResultadoDisparo])
 
     if (!resultadoDisparo) return null
+    if (resultadoDisparo.resultado === RESULTADO_DISPARO.FIN) return null
     const {resultado, posicion} = resultadoDisparo
 
     const baseClass = "resultado-disparo"
@@ -21,6 +23,7 @@ const ResultadoDisparo = ({resultadoDisparo, setResultadoDisparo}) => {
         if (resultadoDisparo.resultado === RESULTADO_DISPARO.TOCADO) return `${baseClass} tocado`
         if (resultadoDisparo.resultado === RESULTADO_DISPARO.HUNDIDO) return `${baseClass} hundido`
     }
+
     return (
         <div className={getClass()}>
             <div>

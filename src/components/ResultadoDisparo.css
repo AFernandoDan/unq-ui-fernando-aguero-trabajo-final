@@ -26,15 +26,19 @@
     color: aqua !important;
 }
 
-.agua > div::after{
-    content: "\1F30A";
+.agua > div::after, .tocado > div::after, .hundido > div::after {
+    margin-top: .25rem;
     position: absolute;
     width: 25px;
     height: 25px;
     border-radius: 50%;
     top : 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); 
+}
+
+.agua > div::after {
+    content: "\1F30A";
     background-color: deepskyblue;    
 }
 
@@ -46,13 +50,6 @@
 
 .tocado > div::after {
     content: "🎯";
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    top : 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: orange;    
 }
 
@@ -64,12 +61,5 @@
 
 .hundido > div::after {
     content: "\1F4A5";
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    top : 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: crimson;    
 }

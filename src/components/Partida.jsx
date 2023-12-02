@@ -15,6 +15,7 @@ import ORIENTACION from "../model/Orientacion"
 import RESULTADO_DISPARO from "../model/resultadoDisparo"
 import TIPO_CASILLA from "../model/tipoCasilla"
 import ANOTADOR from "../model/Anotador"
+import DatosPartida from "./DatosPartida"
 
 const getRandomPosValidaBarco = (barco, orientacion) => {
     let maxdDelLadoOrientado = Math.floor(Math.random() * (9 - barco.longitud))
@@ -90,7 +91,7 @@ const Partida = () => {
         }
     }
 
-    // cuando cambia el resultado del disparo, se actualiza el turno
+    // cuando cambia el resultado del disparo, se actualiza el turno y el ganador si corresponde
     useEffect(() => {
         if (!resultadoDisparo) return
         if (resultadoDisparo.resultado !== RESULTADO_DISPARO.FIN)
@@ -136,18 +137,16 @@ const Partida = () => {
     useEffect(() => {
         if (fase !== FASE.COMBATE || turno !== JUGADOR.PC) return
         const dispararRandom = (tableroMarcaRival) => {
-            console.log("disparando random")
             let posicionesValidas = tableroMarcaRival
                 .map((fila, i) => fila.map((marca, j) => marca === ANOTADOR.VACIO ? {x: i, y: j} : null))
                 .flat()
                 .filter(pos => pos !== null)
             let posicionRandom = posicionesValidas[Math.floor(Math.random() * posicionesValidas.length)]
-            console.log({posicionRandom, posicionesValidas})
             dispararRival(posicionRandom.x, posicionRandom.y)
         }
         const timeout = setTimeout(() => {
             dispararRandom(tableroMarcaRival)
-        }, 2000);
+        }, 3000);
 
         return () => clearTimeout(timeout)
     }, [turno,fase])
@@ -172,39 +171,35 @@ const Partida = () => {
         <Alert message={error} setMessage={setError} error />
         <ResultadoDisparo resultadoDisparo={resultadoDisparo} setResultadoDisparo={setResultadoDisparo} turno={turno} />
         {fase === FASE.IDLE && <Inicio iniciarPartida={iniciarPartida} />}
-        {fase !== FASE.IDLE && <h2>Partida: [fase: {fase}, turno: {turno}, ganador: {JSON.stringify(ganador)}]</h2>}
+        <DatosPartida fase={fase} turno={turno} ganador={ganador} />
         {fase === FASE.PREPARACION && <>
+            <BotonListo listo={listo} fase={fase} jugador={JUGADOR.LOCAL} barcos={barcosLocal} turno={turno} />
             <SelectorBarco 
                 barcos={barcosLocal}
                 setBarcoSeleccionado={setBarcoSeleccionadoLocal}
                 barcoSeleccionado={barcoSeleccionadoLocal} />
             <SelectorOrientacion orientacion={orientacion} setOrientacion={setOrientacion} />
-            <BotonListo listo={listo} fase={fase} jugador={JUGADOR.LOCAL} barcos={barcosLocal} turno={turno} />
-            <TableroBarcos 
-                setError={setError}
-                colocarBarco={colocarBarcoLocal}
-                tableroBarcos={tableroBarcosLocal}
-                jugador={JUGADOR.LOCAL}
-                puedeColocarBarcos={puedeMoverColocarBarcos}
-                />
-            <TableroBarcos
-                setError={setError}
-                colocarBarco={colocarBarcoRival}
-                tableroBarcos={tableroBarcosRival}
-                jugador={JUGADOR.PC}
-                puedeColocarBarcos={puedeMoverColocarBarcos}
-                />
         </>}
-        {fase === FASE.COMBATE && <>
-            <TableroDisparable
-                tablero={tableroMarcaLocal}
-                disparar={dispararLocal}
-                turno={turno}
-                jugador={JUGADOR.LOCAL}
-                />
-        </>}
+        <div className="tableros">
+            {fase === FASE.COMBATE && <>
+                <TableroDisparable
+                    tablero={tableroMarcaLocal}
+                    disparar={dispararLocal}
+                    turno={turno}
+                    jugador={JUGADOR.LOCAL}
+                    />
+            </>}
+            {(fase === FASE.PREPARACION || fase === FASE.COMBATE) && 
+                <TableroBarcos 
+                    setError={setError}
+                    colocarBarco={colocarBarcoLocal}
+                    tableroBarcos={tableroBarcosLocal}
+                    jugador={JUGADOR.LOCAL}
+                    puedeColocarBarcos={puedeMoverColocarBarcos}
+                    />
+            }
+        </div>
         {fase === FASE.FINALIZADA && <>
-            <h1>GANADOR: {ganador}</h1>
             <button onClick={irAlInicio}>Volver al inicio</button>
         </>}
     </div>)

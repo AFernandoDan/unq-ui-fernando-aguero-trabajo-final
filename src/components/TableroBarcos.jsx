@@ -23,7 +23,7 @@ const TableroBarcos = ({tableroBarcos, colocarBarco, setError, jugador, puedeCol
 
   return (
     <div>
-        <h3>Tablero Barcos</h3>
+        <h3>Tus barcos</h3>
         <div className={tableroClassName}>
             {tableroBarcos.map((fila, i) => (
                 fila.map((casilla, j) => (

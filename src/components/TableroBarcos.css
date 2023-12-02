@@ -1,5 +1,5 @@
 .agua {
-    background-color: #ccc;
+    background-color: #fafafa;
 }
 
 .barco {
@@ -10,8 +10,8 @@
 .barco.tocado::after{
     content: "";
     position: absolute;
-    width: 25px;
-    height: 25px;
+    width: 50%;
+    height: 50%;
     border-radius: 50%;
     top : 50%;
     left: 50%;
