@@ -12,8 +12,18 @@ import useTableroDisparable from "../hooks/useTableroDisparable"
 import useTableroBarcos from "../hooks/useTableroBarcos"
 import Inicio from "./Inicio"
 import ORIENTACION from "../model/Orientacion"
+import RESULTADO_DISPARO from "../model/resultadoDisparo"
+import TIPO_CASILLA from "../model/tipoCasilla"
+import ANOTADOR from "../model/Anotador"
 
+const getRandomPosValidaBarco = (barco, orientacion) => {
+    let maxdDelLadoOrientado = Math.floor(Math.random() * (9 - barco.longitud))
+    let maxdDelLadoNoOrientado = Math.floor(Math.random() * 10)
 
+    return orientacion === ORIENTACION.HORIZONTAL 
+        ? {x: Math.floor(maxdDelLadoOrientado), y: Math.floor(maxdDelLadoNoOrientado)} 
+        : {x: Math.floor(maxdDelLadoNoOrientado), y: Math.floor(maxdDelLadoOrientado)}
+}
 
 const Partida = () => {
     const [ganador, setGanador] = useState(null)
@@ -61,26 +71,17 @@ const Partida = () => {
         tableroMarcaLocal, 
         dispararLocal, 
         reiniciarTableroMarcaLocal] 
-        = useTableroDisparable(tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo)
+        = useTableroDisparable(tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo, JUGADOR.LOCAL, turno)
     
     const [
         tableroMarcaRival, 
         dispararRival, 
         reiniciarTableroMarcaRival
     ]
-        = useTableroDisparable(tableroBarcosLocal, setTableroBarcosLocal, setResultadoDisparo)
-
-    const getRandomPosValida = (barco, orientacion) => {
-        let maxdDelLadoOrientado = Math.floor(Math.random() * (9 - barco.longitud))
-        let maxdDelLadoNoOrientado = Math.floor(Math.random() * 10)
-
-        return orientacion === ORIENTACION.HORIZONTAL 
-            ? {x: Math.floor(maxdDelLadoOrientado), y: Math.floor(maxdDelLadoNoOrientado)} 
-            : {x: Math.floor(maxdDelLadoNoOrientado), y: Math.floor(maxdDelLadoOrientado)}
-    }
+        = useTableroDisparable(tableroBarcosLocal, setTableroBarcosLocal, setResultadoDisparo, JUGADOR.PC, turno)
 
     const intentarColocarBarcoEnPosRandom = (barco, orientacion, colocarBarco) => {
-        let {x,y} = getRandomPosValida(barco, orientacion)
+        let {x,y} = getRandomPosValidaBarco(barco, orientacion)
         try {
             colocarBarco(x, y)
             return true
@@ -88,6 +89,16 @@ const Partida = () => {
             return false
         }
     }
+
+    // cuando cambia el resultado del disparo, se actualiza el turno
+    useEffect(() => {
+        if (!resultadoDisparo) return
+        if (resultadoDisparo.resultado !== RESULTADO_DISPARO.FIN)
+            return setTurno(resultadoDisparo.turno === JUGADOR.LOCAL ? JUGADOR.PC : JUGADOR.LOCAL)
+
+        setGanador(resultadoDisparo.turno)
+        setFase(FASE.FINALIZADA)
+    }, [resultadoDisparo])
 
     // cuando se coloca un barco, se selecciona el siguiente barco
     useEffect(() => {
@@ -121,6 +132,25 @@ const Partida = () => {
             listo(barcosRival, JUGADOR.PC)
     }, [fase, barcosRival])
 
+    // cuando sea el turno de la pc, dispara en una posicion random
+    useEffect(() => {
+        if (fase !== FASE.COMBATE || turno !== JUGADOR.PC) return
+        const dispararRandom = (tableroMarcaRival) => {
+            console.log("disparando random")
+            let posicionesValidas = tableroMarcaRival
+                .map((fila, i) => fila.map((marca, j) => marca === ANOTADOR.VACIO ? {x: i, y: j} : null))
+                .flat()
+                .filter(pos => pos !== null)
+            let posicionRandom = posicionesValidas[Math.floor(Math.random() * posicionesValidas.length)]
+            console.log({posicionRandom, posicionesValidas})
+            dispararRival(posicionRandom.x, posicionRandom.y)
+        }
+        const timeout = setTimeout(() => {
+            dispararRandom(tableroMarcaRival)
+        }, 2000);
+
+        return () => clearTimeout(timeout)
+    }, [turno,fase])
 
     const iniciarPartida = () => {
         setFase(FASE.PREPARACION)
@@ -169,7 +199,13 @@ const Partida = () => {
             <TableroDisparable
                 tablero={tableroMarcaLocal}
                 disparar={dispararLocal}
+                turno={turno}
+                jugador={JUGADOR.LOCAL}
                 />
+        </>}
+        {fase === FASE.FINALIZADA && <>
+            <h1>GANADOR: {ganador}</h1>
+            <button onClick={irAlInicio}>Volver al inicio</button>
         </>}
     </div>)
 }

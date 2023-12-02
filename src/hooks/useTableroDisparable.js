@@ -5,14 +5,14 @@ import TIPO_CASILLA from "../model/tipoCasilla"
 
 const tableroMarcasInicial = Array(10).fill(Array(10).fill(ANOTADOR.VACIO))
 
-const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo) => {
+const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo, jugador, turno) => {
 
     const [tablero, setTablero] = useState(tableroMarcasInicial)
 
     const reiniciar = () => setTablero(tableroMarcasInicial)
 
     const disparar = (i, j) => {
-        if (tablero[i][j] !== ANOTADOR.VACIO) return
+        if (tablero[i][j] !== ANOTADOR.VACIO || turno !== jugador) return
 
         let resultadoDisparo = RESULTADO_DISPARO.AGUA
         let nuevoTablero = tableroBarcosRival.map(fila => [...fila])
@@ -38,7 +38,7 @@ const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival, setResu
         setTableroBarcosRival(nuevoTablero)
         const marcador = resultadoDisparo === RESULTADO_DISPARO.AGUA ? ANOTADOR.BLANCO : ANOTADOR.AMARILLO
         handleMarcar(i, j, marcador)
-        setResultadoDisparo({resultado: resultadoDisparo, posicion: {x: j, y: i}})
+        setResultadoDisparo({resultado: resultadoDisparo, posicion: {x: j, y: i}, turno})
         return resultadoDisparo
     }
 

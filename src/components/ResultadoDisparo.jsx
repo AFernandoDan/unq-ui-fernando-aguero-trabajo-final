@@ -8,7 +8,7 @@ const ResultadoDisparo = ({resultadoDisparo, setResultadoDisparo}) => {
         if (!resultadoDisparo) return
         const timeout = setTimeout(() => {
             setResultadoDisparo(null)
-        }, 3000)
+        }, 1000)
         return () => clearTimeout(timeout)
     }, [resultadoDisparo, setResultadoDisparo])
 
