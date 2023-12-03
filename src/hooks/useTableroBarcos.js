@@ -43,12 +43,15 @@ const useTableroBarcos = () => {
                 }
             }
         }
+
+        console.log(nuevoTablero.flat().filter(c => c.tipoCasilla === TIPO_CASILLA.BARCO).length)
     
         // Comprobar si ya hay un barco en las posiciones que va a ocupar el barco
         for (let k = 0; k < barcoSeleccionado.longitud; k++) {
-            if ((orientacion === ORIENTACION.HORIZONTAL && nuevoTablero[i][j + k].tipoCasilla === TIPO_CASILLA.BARCO) ||
-                (orientacion === ORIENTACION.VERTICAL && nuevoTablero[i + k][j].tipoCasilla === TIPO_CASILLA.BARCO))
-                throw new Error(`Hay un ${nuevoTablero[i][j + k].tipoBarco} en (${i}, ${j + k})`)
+            if ((orientacion === ORIENTACION.HORIZONTAL && nuevoTablero[i][j + k].tipoCasilla === TIPO_CASILLA.BARCO))
+                throw new Error(`Hay un ${nuevoTablero[i][j + k].tipoBarco} en la posición (${i}, ${j + k})`)
+            if ((orientacion === ORIENTACION.VERTICAL && nuevoTablero[i + k][j].tipoCasilla === TIPO_CASILLA.BARCO))
+                throw new Error(`Hay un ${nuevoTablero[i + k][j].tipoBarco} en la posición (${i + k}, ${j})`)
         }
     
         marcarBarcoColocado(barcoSeleccionado, barcos, setBarcos, setBarcoSeleccionado)
