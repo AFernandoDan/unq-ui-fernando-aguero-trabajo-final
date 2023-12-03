@@ -4,6 +4,7 @@ import TIPO_BARCO from '../model/tipoBarco'
 import "./Tablero.css"
 import "./TableroBarcos.css"
 import "./Barco.css"
+import TableroContainer from './TableroContainer'
 
 const getCasillaBarcoClass = (casilla) => {
     switch (casilla.tipoBarco) {
@@ -39,13 +40,15 @@ const TableroBarcos = ({tableroBarcos, colocarBarco, setError, jugador, puedeCol
   return (
     <div>
         <h3>Tus barcos</h3>
-        <div className={tableroClassName}>
-            {tableroBarcos.map((fila, i) => (
-                fila.map((casilla, j) => (
-                    <div key={j} className={`casilla ${getCasillaClass(casilla)}`} onClick={() => handleClickCasilla(i,j)}></div>
-                ))
-            ))}
-        </div>
+        <TableroContainer>
+            <div className={tableroClassName}>
+                {tableroBarcos.map((fila, i) => (
+                    fila.map((casilla, j) => (
+                        <div key={j} className={`casilla ${getCasillaClass(casilla)}`} onClick={() => handleClickCasilla(i,j)}></div>
+                    ))
+                ))}
+            </div>
+        </TableroContainer>
     </div>
 )
 }

@@ -34,4 +34,4 @@ npm install
 npm run dev
 ```
 
-### Listo. La aplicación deberia estar ejecutandose en <http://localhost:5173>
+### Listo. Puede ver la aplicación en la siguiente url: <http://localhost:5173>

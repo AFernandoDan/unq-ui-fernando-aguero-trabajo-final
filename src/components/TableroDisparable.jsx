@@ -1,6 +1,7 @@
 import "./TableroDisparable.css"
 import "./Tablero.css"
 import ANOTADOR from "../model/Anotador"
+import TableroContainer from "./TableroContainer"
 
 const getColorCasilla = (casilla) => {
     if (casilla === ANOTADOR.AMARILLO) return "yellow"
@@ -23,13 +24,15 @@ const TableroDisparable = ({tablero, disparar, turno, jugador}) => {
     return (
         <div>
             <h3>Tus disparos</h3>
-            <div className="tablero">
-                {tablero.map((fila, i) => (
-                    fila.map((casilla, j) => (
-                        <div key={j} className={getCasillaClass(casilla, turno, jugador)} onClick={() => handleDispararCasilla(i,j)}></div>
-                    ))
-                ))}
-            </div>
+            <TableroContainer>
+                <div className="tablero">
+                    {tablero.map((fila, i) => (
+                        fila.map((casilla, j) => (
+                            <div key={j} className={getCasillaClass(casilla, turno, jugador)} onClick={() => handleDispararCasilla(i,j)}></div>
+                        ))
+                    ))}
+                </div>
+            </TableroContainer>
         </div>
     )
 }
