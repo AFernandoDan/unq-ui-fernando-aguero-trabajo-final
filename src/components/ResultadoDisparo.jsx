@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import "./ResultadoDisparo.css"
 import RESULTADO_DISPARO from '../model/resultadoDisparo'
 import JUGADOR from '../model/jugador'
+import { parsePos } from '../helpers/position'
 
 const ResultadoDisparo = ({resultadoDisparo, setResultadoDisparo}) => {
 
@@ -24,11 +25,13 @@ const ResultadoDisparo = ({resultadoDisparo, setResultadoDisparo}) => {
         if (resultadoDisparo.resultado === RESULTADO_DISPARO.HUNDIDO) return `${baseClass} hundido`
     }
 
+
+    const parsedPos = parsePos(resultadoDisparo.posicion.x, resultadoDisparo.posicion.y)
     return (
         <div className={getClass()}>
             <div>
                 <h2>{resultado}</h2>
-                <h3>En ({posicion.x}, {posicion.y})</h3>
+                <h3>En ({parsedPos.x}, {parsedPos.y})</h3>
             </div>
         </div>
     )

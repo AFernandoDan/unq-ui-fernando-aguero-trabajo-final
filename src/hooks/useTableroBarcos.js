@@ -2,6 +2,7 @@ import { useState } from "react"
 import ORIENTACION from "../model/Orientacion"
 import TIPO_BARCO from "../model/TipoBarco"
 import TIPO_CASILLA from "../model/tipoCasilla"
+import { parsePos } from "../helpers/position"
 
 const barcosIniciales = [
     {tipoBarco: TIPO_BARCO.PORTAAVIONES, longitud: 4, colocado: false},
@@ -44,14 +45,16 @@ const useTableroBarcos = () => {
             }
         }
 
-        console.log(nuevoTablero.flat().filter(c => c.tipoCasilla === TIPO_CASILLA.BARCO).length)
-    
         // Comprobar si ya hay un barco en las posiciones que va a ocupar el barco
         for (let k = 0; k < barcoSeleccionado.longitud; k++) {
-            if ((orientacion === ORIENTACION.HORIZONTAL && nuevoTablero[i][j + k].tipoCasilla === TIPO_CASILLA.BARCO))
-                throw new Error(`Hay un ${nuevoTablero[i][j + k].tipoBarco} en la posición (${i}, ${j + k})`)
-            if ((orientacion === ORIENTACION.VERTICAL && nuevoTablero[i + k][j].tipoCasilla === TIPO_CASILLA.BARCO))
-                throw new Error(`Hay un ${nuevoTablero[i + k][j].tipoBarco} en la posición (${i + k}, ${j})`)
+            if ((orientacion === ORIENTACION.HORIZONTAL && nuevoTablero[i][j + k].tipoCasilla === TIPO_CASILLA.BARCO)) {
+                const pos = parsePos(i, j + k)
+                throw new Error(`Hay un ${nuevoTablero[i][j + k].tipoBarco} en la posición (${pos.x}, ${pos.y})`)
+            }
+            if ((orientacion === ORIENTACION.VERTICAL && nuevoTablero[i + k][j].tipoCasilla === TIPO_CASILLA.BARCO)) {
+                const pos = parsePos(i + k, j)
+                throw new Error(`Hay un ${nuevoTablero[i + k][j].tipoBarco} en la posición (${pos.x}, ${pos.y})`)
+            }
         }
     
         marcarBarcoColocado(barcoSeleccionado, barcos, setBarcos, setBarcoSeleccionado)

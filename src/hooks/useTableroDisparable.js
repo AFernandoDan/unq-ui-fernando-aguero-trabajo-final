@@ -38,7 +38,7 @@ const useTableroDisparable = (tableroBarcosRival, setTableroBarcosRival, setResu
         setTableroBarcosRival(nuevoTablero)
         const marcador = resultadoDisparo === RESULTADO_DISPARO.AGUA ? ANOTADOR.BLANCO : ANOTADOR.AMARILLO
         handleMarcar(i, j, marcador)
-        setResultadoDisparo({resultado: resultadoDisparo, posicion: {x: j, y: i}, turno})
+        setResultadoDisparo({resultado: resultadoDisparo, posicion: {x: i, y: j}, turno})
         return resultadoDisparo
     }
 
