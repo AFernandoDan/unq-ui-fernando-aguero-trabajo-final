@@ -14,7 +14,9 @@ const DatosPartidaEnCurso = ({turno, fase}) => {
             <h3>{emoji} {fase} {emoji}</h3>
             {fase === FASE.COMBATE && turno && 
                 <h3>
-                    <p style={{color: getColor(turno, JUGADOR.LOCAL)}}>{esElTurno(turno, JUGADOR.LOCAL) ? "Es tu turno" : "Es el turno del rival"}</p>
+                    <p style={{color: getColor(turno, JUGADOR.LOCAL)}}>
+                        {esElTurno(turno, JUGADOR.LOCAL) ? "Es tu turno" : "Es el turno del rival"}
+                    </p>
                 </h3>
             }
         </div>
