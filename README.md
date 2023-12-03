@@ -1,8 +1,37 @@
-# React + Vite
+# unq-ui-fernando-aguero-trabajo-final
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este repositorio contiene el proyecto final de la materia "Construcción de interfaces de usuario" de la Universidad Nacional de Quilmes.
 
-Currently, two official plugins are available:
+## Instrucciones de Instalación y Ejecución
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Requisitos
+* Tener instalado git
+* Tener instalado NPM y Node 18 o superior
+
+Siga los pasos a continuación para descargar, instalar y ejecutar localmente el proyecto.
+
+### Ejecutar una terminal
+Abre una terminal y navega hasta el directorio donde deseas clonar el repositorio.
+
+### Clonar el Repositorio
+
+```bash
+git clone https://github.com/AFernandoDan/unq-ui-fernando-aguero-trabajo-final
+```
+
+### Ir al directorio del repositorio
+```bash
+cd unq-ui-fernando-aguero-trabajo-final
+```
+
+### Instalar las dependencias
+```bash
+npm install
+```
+
+### Ejecuta la aplicación
+```bash
+npm run dev
+```
+
+### Listo. La aplicación deberia estar ejecutandose en <http://localhost:5173>
