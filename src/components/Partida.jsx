@@ -13,9 +13,9 @@ import useTableroBarcos from "../hooks/useTableroBarcos"
 import Inicio from "./Inicio"
 import ORIENTACION from "../model/Orientacion"
 import RESULTADO_DISPARO from "../model/resultadoDisparo"
-import TIPO_CASILLA from "../model/tipoCasilla"
 import ANOTADOR from "../model/Anotador"
 import DatosPartida from "./DatosPartida"
+import useHistorial from "../hooks/useHistorial"
 
 const getRandomPosValidaBarco = (barco, orientacion) => {
     let maxdDelLadoOrientado = Math.floor(Math.random() * (9 - barco.longitud))
@@ -26,12 +26,15 @@ const getRandomPosValidaBarco = (barco, orientacion) => {
         : {x: Math.floor(maxdDelLadoNoOrientado), y: Math.floor(maxdDelLadoOrientado)}
 }
 
+
+
 const Partida = () => {
     const [ganador, setGanador] = useState(null)
     const [turno, setTurno] = useState(null)
     const [resultadoDisparo, setResultadoDisparo] = useState(null)
     const [fase, setFase] = useState(FASE.IDLE)
     const [error, setError] = useState(null)
+    const {historial, addToHistorial, clearHistorial} = useHistorial()
 
     const [
         colocarBarcoLocal, 
@@ -91,6 +94,22 @@ const Partida = () => {
         }
     }
 
+    const iniciarPartida = () => {
+        setFase(FASE.PREPARACION)
+        setGanador(null)
+        setTurno(null)
+        setResultadoDisparo()
+        setError(null)
+        reiniciarTableroMarcaLocal()
+        reiniciarTableroMarcaRival()
+        reiniciarTableroBarcosLocal()
+        reiniciarTableroBarcosRival()
+    }
+
+    const irAlInicio = () => {
+        setFase(FASE.IDLE)
+    }
+
     // cuando cambia el resultado del disparo, se actualiza el turno y el ganador si corresponde
     useEffect(() => {
         if (!resultadoDisparo) return
@@ -98,6 +117,7 @@ const Partida = () => {
             return setTurno(resultadoDisparo.turno === JUGADOR.LOCAL ? JUGADOR.PC : JUGADOR.LOCAL)
 
         setGanador(resultadoDisparo.turno)
+        addToHistorial(resultadoDisparo.turno)
         setFase(FASE.FINALIZADA)
     }, [resultadoDisparo])
 
@@ -151,26 +171,10 @@ const Partida = () => {
         return () => clearTimeout(timeout)
     }, [turno,fase])
 
-    const iniciarPartida = () => {
-        setFase(FASE.PREPARACION)
-        setGanador(null)
-        setTurno(null)
-        setResultadoDisparo()
-        setError(null)
-        reiniciarTableroMarcaLocal()
-        reiniciarTableroMarcaRival()
-        reiniciarTableroBarcosLocal()
-        reiniciarTableroBarcosRival()
-    }
-
-    const irAlInicio = () => {
-        setFase(FASE.IDLE)
-    }
-
     return (<div>
         <Alert message={error} setMessage={setError} error />
         <ResultadoDisparo resultadoDisparo={resultadoDisparo} setResultadoDisparo={setResultadoDisparo} turno={turno} />
-        {fase === FASE.IDLE && <Inicio iniciarPartida={iniciarPartida} />}
+        <Inicio iniciarPartida={iniciarPartida} historial={historial} fase={fase} clearHistorial={clearHistorial} />
         <DatosPartida fase={fase} turno={turno} ganador={ganador} />
         {fase === FASE.PREPARACION && <>
             <BotonListo listo={listo} fase={fase} jugador={JUGADOR.LOCAL} barcos={barcosLocal} turno={turno} />
