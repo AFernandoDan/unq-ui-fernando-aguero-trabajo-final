@@ -1,16 +1,31 @@
 import React from 'react'
 import TIPO_CASILLA from '../model/tipoCasilla'
+import TIPO_BARCO from '../model/tipoBarco'
 import "./Tablero.css"
 import "./TableroBarcos.css"
+import "./Barco.css"
+
+const getCasillaBarcoClass = (casilla) => {
+    switch (casilla.tipoBarco) {
+        case TIPO_BARCO.PORTAAVIONES:
+            return "portaaviones "
+        case TIPO_BARCO.SUBMARINO:
+            return "submarino "
+        case TIPO_BARCO.LANCHA:
+            return "lancha "
+        case TIPO_BARCO.FRAGATA:
+            return "fragata "
+    }
+}
+
+const getCasillaClass = (casilla) => 
+    (casilla.tipoCasilla === TIPO_CASILLA.BARCO ? getCasillaBarcoClass(casilla) : "agua ") + (casilla.tocado ? "tocado" : "")
 
 const baseClass = "tablero "
 const TableroBarcos = ({tableroBarcos, colocarBarco, setError, jugador, puedeColocarBarcos}) => {
 
     const disabled = !puedeColocarBarcos(jugador)
     const tableroClassName = disabled ? baseClass : baseClass + "preparacion"
-
-    const getCasillaClass = (casilla) => 
-        (casilla.tipoCasilla === TIPO_CASILLA.BARCO ? "barco " : "agua ") + (casilla.tocado ? "tocado" : "")
 
     const handleClickCasilla = (i, j) => {
         if (disabled) return

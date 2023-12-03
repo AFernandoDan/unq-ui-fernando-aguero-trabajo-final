@@ -1,0 +1,72 @@
+:root {
+    --agua: #fafafa;
+    --portaaviones: cornflowerblue;
+    --submarino: forestgreen;
+    --lancha: crimson;
+    --fragata: darkorchid;
+}
+
+.agua {
+    background-color: var(--agua);
+}
+
+.portaaviones, .submarino, .lancha, .fragata {
+    position: relative;
+}
+
+.portaaviones {
+    background-color: var(--portaaviones);
+}
+
+.submarino {
+    background-color: var(--submarino);
+}
+
+.lancha {
+    background-color: var(--lancha);
+}
+
+.fragata {
+    background-color: var(--fragata);
+}
+
+.portaaviones.tocado::after, .submarino.tocado::after, .lancha.tocado::after, .fragata.tocado::after {
+    content: "";
+    position: absolute;
+    width: 45%;
+    height: 45%;
+    top : 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: orange;    
+}
+
+.radio-barco:hover {
+    cursor: pointer;
+}
+
+.radio-barco.portaaviones {
+    color: var(--portaaviones);
+}
+
+/* select the input radio in .radio-barco is a label */
+.radio-barco.portaaviones input[type="radio"] {
+    /* set colors to radio */
+    background-color: var(--portaaviones);
+}
+
+.radio-barco.submarino {
+    color: var(--submarino);
+}
+
+.radio-barco.lancha {
+    color: var(--lancha);
+}
+
+.radio-barco.fragata {
+    color: var(--fragata);
+}
+
+.radio-barco {
+    background-color: transparent;
+}
