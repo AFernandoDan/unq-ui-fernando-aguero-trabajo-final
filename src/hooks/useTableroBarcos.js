@@ -86,7 +86,19 @@ const useTableroBarcos = () => {
         setBarcos(barcosActualizados)
         const barcoSeleccionadoActualizado = barcosActualizados.find(barco => barcoSeleccionado.tipoBarco === barco.tipoBarco)
         setBarcoSeleccionado(barcoSeleccionadoActualizado)
-    }  
+    }
+
+    const casillasEnLasQueSePodiraColocar = (i, j) => {
+        const casillas = []
+        for (let k = 0; k < barcoSeleccionado.longitud; k++) {
+            if (orientacion === ORIENTACION.HORIZONTAL) {
+                j+k < 10 && casillas.push({x: i, y: j + k})
+            } else { // ORIENTACION.VERTICAL
+                i+k < 10 && casillas.push({x: i + k, y: j})
+            }
+        }
+        return casillas
+    }
 
     return [
         colocarBarco, 
@@ -97,7 +109,8 @@ const useTableroBarcos = () => {
         setBarcoSeleccionado, 
         orientacion, 
         setOrientacion,
-        reiniciar
+        reiniciar,
+        casillasEnLasQueSePodiraColocar
     ]
 }
 

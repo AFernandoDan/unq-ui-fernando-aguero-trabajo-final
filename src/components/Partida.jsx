@@ -45,7 +45,8 @@ const Partida = () => {
         setBarcoSeleccionadoLocal, 
         orientacion, 
         setOrientacion,
-        reiniciarTableroBarcosLocal
+        reiniciarTableroBarcosLocal,
+        casillasEnLasQueSePodiraColocarLocal
     ] = useTableroBarcos()
 
     const [
@@ -200,6 +201,9 @@ const Partida = () => {
                     tableroBarcos={tableroBarcosLocal}
                     jugador={JUGADOR.LOCAL}
                     puedeColocarBarcos={puedeMoverColocarBarcos}
+                    casillasEnLasQueSePodriaColocar={casillasEnLasQueSePodiraColocarLocal}
+                    setTableroBarcos={setTableroBarcosLocal}
+                    barcoSeleccionado={barcoSeleccionadoLocal}
                     />
             }
         </div>
