@@ -1,6 +1,6 @@
-const ORITENTACION = {
+const ORIENTACION = {
     VERTICAL: 'Vertical',
     HORIZONTAL: 'Horizontal'
 }
 
-export default ORITENTACION;
+export default ORIENTACION;

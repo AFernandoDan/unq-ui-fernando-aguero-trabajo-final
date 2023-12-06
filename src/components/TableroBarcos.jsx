@@ -5,6 +5,8 @@ import "./Tablero.css"
 import "./TableroBarcos.css"
 import "./Barco.css"
 import TableroContainer from './TableroContainer'
+import FASE from '../model/Fase'
+import Alert from "./Alert"
 
 const getCasillaBarcoClass = (tipoBarco) => {
     switch (tipoBarco) {
@@ -26,7 +28,8 @@ const getCasillaClass = (casilla, barcoSeleccionado) =>
 
 
 const baseClass = "tablero "
-const TableroBarcos = ({tableroBarcos, colocarBarco, setError, jugador, puedeColocarBarcos, casillasEnLasQueSePodriaColocar, setTableroBarcos, barcoSeleccionado}) => {
+const TableroBarcos = ({tableroBarcos, colocarBarco, jugador, puedeColocarBarcos, casillasEnLasQueSePodriaColocar, setTableroBarcos, barcoSeleccionado, fase}) => {
+    const [error, setError] = useState(null)
 
     const disabled = !puedeColocarBarcos(jugador)
     const tableroClassName = disabled ? baseClass : baseClass + "preparacion"
@@ -55,26 +58,29 @@ const TableroBarcos = ({tableroBarcos, colocarBarco, setError, jugador, puedeCol
         setTableroBarcos(tableroBarcos.map((fila) => fila.map((casilla) => ({...casilla, esPosible: false}))))
     }
 
-  return (
-    <div>
-        <h3>Tus barcos</h3>
-        <TableroContainer>
-            <div className={tableroClassName} onMouseLeave={limpiarCasillasPosibles}>
-                {tableroBarcos.map((fila, i) => (
-                    fila.map((casilla, j) => (
-                        <div 
-                            key={j} 
-                            className={`casilla ${getCasillaClass(casilla, barcoSeleccionado)}`} 
-                            onClick={() => handleClickCasilla(i,j)}
-                            onMouseEnter={() => handleHoverCasilla(i,j)}
-                            >
-                        </div>
-                    ))
-                ))}
-            </div>
-        </TableroContainer>
-    </div>
-)
+    if (!(fase === FASE.PREPARACION || fase === FASE.COMBATE)) return null 
+
+    return (
+        <div>
+            <Alert message={error} setMessage={setError} error />
+            <h3>Tus barcos</h3>
+            <TableroContainer>
+                <div className={tableroClassName} onMouseLeave={limpiarCasillasPosibles}>
+                    {tableroBarcos.map((fila, i) => (
+                        fila.map((casilla, j) => (
+                            <div 
+                                key={j} 
+                                className={`casilla ${getCasillaClass(casilla, barcoSeleccionado)}`} 
+                                onClick={() => handleClickCasilla(i,j)}
+                                onMouseEnter={() => handleHoverCasilla(i,j)}
+                                >
+                            </div>
+                        ))
+                    ))}
+                </div>
+            </TableroContainer>
+        </div>
+    )
 }
 
 export default TableroBarcos

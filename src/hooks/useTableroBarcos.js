@@ -19,13 +19,6 @@ const useTableroBarcos = () => {
     const [tableroBarcos, setTableroBarcos] = useState(tableroBarcosInicial)
     const [orientacion, setOrientacion] = useState(ORIENTACION.HORIZONTAL)
 
-    const reiniciar = () => {
-        setBarcos(barcosIniciales)
-        setBarcoSeleccionado(barcosIniciales[0])
-        setTableroBarcos(tableroBarcosInicial)
-        setOrientacion(ORIENTACION.HORIZONTAL)
-    }
-
     const colocarBarco = (i, j) => {
         const nuevoTablero = [...tableroBarcos]
     
@@ -101,15 +94,14 @@ const useTableroBarcos = () => {
     }
 
     return [
-        colocarBarco, 
         tableroBarcos, 
         setTableroBarcos, 
+        colocarBarco, 
         barcos, 
         barcoSeleccionado, 
         setBarcoSeleccionado, 
         orientacion, 
         setOrientacion,
-        reiniciar,
         casillasEnLasQueSePodiraColocar
     ]
 }

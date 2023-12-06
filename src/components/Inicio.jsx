@@ -31,14 +31,14 @@ const getFraseRandom = (diff) => {
 }
 
 
-const Inicio = ({iniciarPartida, historial, fase, clearHistorial}) => {
+const Inicio = ({setFase, historial, fase, clearHistorial}) => {
   if (fase !== FASE.IDLE) return null
 
   const diff = historial[JUGADOR.LOCAL] - historial[JUGADOR.PC]
 
   return (
     <div>
-        <button onClick={iniciarPartida}>Iniciar partida</button>
+        <button onClick={() => setFase(FASE.PREPARACION)}>Iniciar partida</button>
         <h2>Historial</h2>
         <p>Tu: {historial[JUGADOR.LOCAL]}</p>
         <p>La PC: {historial[JUGADOR.PC]}</p>

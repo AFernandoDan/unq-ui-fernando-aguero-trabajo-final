@@ -2,6 +2,7 @@ import "./TableroDisparable.css"
 import "./Tablero.css"
 import ANOTADOR from "../model/Anotador"
 import TableroContainer from "./TableroContainer"
+import FASE from "../model/Fase"
 
 const getColorCasilla = (casilla) => {
     if (casilla === ANOTADOR.AMARILLO) return "yellow"
@@ -15,11 +16,13 @@ const getClickeableClass = (casilla, turno, jugador) => puedeDisparar(casilla, t
 
 const getCasillaClass = (casilla, turno, jugador) => `${getColorCasilla(casilla)} casilla ${getClickeableClass(casilla, turno, jugador)}`
 
-const TableroDisparable = ({tablero, disparar, turno, jugador}) => {
+const TableroDisparable = ({tablero, disparar, turno, jugador, fase}) => {
 
     const handleDispararCasilla = (i, j) => {
         disparar(i, j)
     }
+
+    if (fase !== FASE.COMBATE) return null
 
     return (
         <div>
