@@ -1,13 +1,17 @@
-.gray {
+.casilla-sin-disparar {
     background-color: darkgrey;
 }
 
-.yellow {
-    background-color: gold;
+.casilla-barco-tocado {
+    background-color: goldenrod;
 }
 
-.white {
+.casilla-nada {
     background-color: #fff;
+}
+
+.casilla-barco-hundido {
+    background-color: crimson;
 }
 
 .clickeable {

@@ -11,7 +11,7 @@ const barcosIniciales = [
     {tipoBarco: TIPO_BARCO.LANCHA, longitud: 2, colocado: false},
 ]
 
-const tableroBarcosInicial = Array(10).fill(Array(10).fill({tipoCasilla: TIPO_CASILLA.AGUA}))
+const tableroBarcosInicial = Array(10).fill(Array(10).fill({tipoCasilla: TIPO_CASILLA.AGUA, tocado: false}))
 
 const useTableroBarcos = () => {
     const [barcos, setBarcos] = useState(barcosIniciales)

@@ -1,16 +1,17 @@
 import "./TableroDisparable.css"
 import "./Tablero.css"
-import ANOTADOR from "../model/Anotador"
 import TableroContainer from "./TableroContainer"
 import FASE from "../model/Fase"
+import TIPO_CASILLA from "../model/tipoCasilla"
 
 const getColorCasilla = (casilla) => {
-    if (casilla === ANOTADOR.AMARILLO) return "yellow"
-    if (casilla === ANOTADOR.BLANCO) return "white"
-    if (casilla === ANOTADOR.VACIO) return "gray"
+    if (!casilla.tocado) return "casilla-sin-disparar"
+    if (casilla.tipoCasilla === TIPO_CASILLA.BARCO && casilla.hundido) return "casilla-barco-hundido"
+    if (casilla.tipoCasilla === TIPO_CASILLA.BARCO) return "casilla-barco-tocado"
+    if (casilla.tipoCasilla === TIPO_CASILLA.AGUA) return "casilla-nada"
 }
 
-const puedeDisparar = (casilla, turno, jugador) => casilla === ANOTADOR.VACIO && turno === jugador
+const puedeDisparar = (casilla, turno, jugador) => !casilla.tocado && turno === jugador
 
 const getClickeableClass = (casilla, turno, jugador) => puedeDisparar(casilla, turno, jugador) ? "clickeable" : ""
 

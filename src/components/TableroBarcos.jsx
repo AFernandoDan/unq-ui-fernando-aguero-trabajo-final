@@ -22,9 +22,10 @@ const getCasillaBarcoClass = (tipoBarco) => {
 }
 
 const getCasillaClass = (casilla, barcoSeleccionado) => 
+    (casilla.esPosible ? "posible " + getCasillaBarcoClass(barcoSeleccionado.tipoBarco) : "") +
     (casilla.tipoCasilla === TIPO_CASILLA.BARCO ? getCasillaBarcoClass(casilla.tipoBarco) : "agua ") + 
     (casilla.tocado ? "tocado " : "") +
-    (casilla.esPosible ? "posible " + getCasillaBarcoClass(barcoSeleccionado.tipoBarco) : "")
+    (casilla.hundido ? "hundido " : "")
 
 
 const baseClass = "tablero "

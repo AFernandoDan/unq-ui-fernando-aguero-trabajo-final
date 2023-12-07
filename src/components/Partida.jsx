@@ -1,7 +1,6 @@
 import TableroDisparable from "./TableroDisparable"
 import JUGADOR from "../model/jugador"
 import FASE from "../model/Fase"
-import ResultadoDisparo from "./ResultadoDisparo"
 import TableroBarcos from "./TableroBarcos"
 import SelectorBarco from "./SelectorBarco"
 import SelectorOrientacion from "./SelectorOrientacion"
@@ -24,13 +23,12 @@ const Partida = ({fase,setFase, addToHistorial}) => {
         orientacion, 
         setOrientacion,
         casillasEnLasQueSePodiraColocar,
-        tableroMarca, 
-        disparar, 
+        disparar,
+        tableroBarcosRival,
         puedeMoverColocarBarcos
     ] = jugador
 
     return (<div>
-        <ResultadoDisparo resultadoDisparo={resultadoDisparo} setResultadoDisparo={setResultadoDisparo} turno={turno} />
         <DatosPartida fase={fase} turno={turno} ganador={ganador} />
         {fase === FASE.PREPARACION && <>
             <BotonListo listo={listo} fase={fase} jugador={JUGADOR.LOCAL} barcos={barcos} turno={turno} />
@@ -40,7 +38,7 @@ const Partida = ({fase,setFase, addToHistorial}) => {
         <div className="tableros">
             <TableroDisparable
                 fase={fase}
-                tablero={tableroMarca}
+                tablero={tableroBarcosRival}
                 disparar={disparar}
                 turno={turno}
                 jugador={JUGADOR.LOCAL}

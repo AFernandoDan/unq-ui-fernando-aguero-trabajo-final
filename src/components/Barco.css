@@ -1,16 +1,22 @@
 :root {
-    --agua: #fafafa;
-    --portaaviones: cornflowerblue;
+    --agua-sin-tocar: darkgray;
+    --agua-tocado: aquamarine;
+    --portaaviones: orange;
     --submarino: forestgreen;
     --lancha: crimson;
     --fragata: darkorchid;
+    --barco-tocado: #fafafa;
+    --barco-hundido: black;
 }
 
+.agua.tocado {
+    background-color: var(--agua-tocado);
+}
 .agua {
-    background-color: var(--agua);
+    background-color: var(--agua-sin-tocar);
 }
 
-.portaaviones, .submarino, .lancha, .fragata {
+.portaaviones, .submarino, .lancha, .fragata, .agua {
     position: relative;
 }
 
@@ -30,6 +36,10 @@
     background-color: var(--fragata);
 }
 
+.agua.tocado {
+    background-color: var(--agua-tocado);
+}
+
 .portaaviones.tocado::after, .submarino.tocado::after, .lancha.tocado::after, .fragata.tocado::after {
     content: "";
     position: absolute;
@@ -38,7 +48,11 @@
     top : 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: orange;    
+    background-color: var(--barco-tocado);    
+}
+
+.hundido::after {
+    background-color: var(--barco-hundido) !important;
 }
 
 .radio-barco:hover {

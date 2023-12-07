@@ -40,11 +40,9 @@ const partida = (fase, setFase, addToHistorial) => {
 
     const puedeMoverColocarBarcos = (jugador) => fase === FASE.PREPARACION && turno !== jugador
 
-    const [tableroMarca, disparar] = 
-        useTableroDisparable(tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo, JUGADOR.LOCAL, turno)
+    const disparar = useTableroDisparable(tableroBarcosRival, setTableroBarcosRival, setResultadoDisparo, JUGADOR.LOCAL, turno)
     
-    const [tableroMarcaRival, dispararRival] = 
-        useTableroDisparable(tableroBarcos, setTableroBarcos, setResultadoDisparo, JUGADOR.PC, turno)
+    const dispararRival = useTableroDisparable(tableroBarcos, setTableroBarcos, setResultadoDisparo, JUGADOR.PC, turno)
 
     handleSiguienteBarco(barcosRival, setBarcoSeleccionadoRival)
 
@@ -52,9 +50,9 @@ const partida = (fase, setFase, addToHistorial) => {
 
     handleEstaListo(barcosRival, fase, listo, JUGADOR.PC)
 
-    handleDispararRandom(fase, turno, dispararRival, tableroMarcaRival)
+    handleDispararRandom(fase, turno, dispararRival, tableroBarcos)
 
-    jugadorLocal = [...jugadorLocal, tableroMarca, disparar, puedeMoverColocarBarcos]
+    jugadorLocal = [...jugadorLocal, disparar, tableroBarcosRival, puedeMoverColocarBarcos]
 
     return [jugadorLocal, ganador, turno, resultadoDisparo, setResultadoDisparo, listo]
 }

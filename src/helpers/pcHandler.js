@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import FASE from "../model/Fase"
 import ORIENTACION from "../model/Orientacion"
-import ANOTADOR from "../model/Anotador"
 import JUGADOR from "../model/jugador"
 
 const getOrientacionRandom = () => Math.floor(Math.random() * 2) === 0 ? ORIENTACION.HORIZONTAL : ORIENTACION.VERTICAL
@@ -60,21 +59,21 @@ const handleEstaListo = (barcos, fase, listo, jugador) => {
     }, [fase, barcos])
 }
 
-const handleDispararRandom = (fase, turno, disparar, tableroMarca) => {
+const handleDispararRandom = (fase, turno, disparar, tableroRival) => {
        // cuando sea el turno de la pc, dispara en una posicion random
        useEffect(() => {
         if (fase !== FASE.COMBATE || turno !== JUGADOR.PC) return
-        const dispararRandom = (tableroMarca) => {
-            let posicionesValidas = tableroMarca
-                .map((fila, i) => fila.map((marca, j) => marca === ANOTADOR.VACIO ? {x: i, y: j} : null))
+        const dispararRandom = (tableroRival) => {
+            let posicionesValidas = tableroRival
+                .map((fila, i) => fila.map((casilla, j) => !casilla.tocado ? {x: i, y: j} : null))
                 .flat()
                 .filter(pos => pos !== null)
             let posicionRandom = posicionesValidas[Math.floor(Math.random() * posicionesValidas.length)]
             disparar(posicionRandom.x, posicionRandom.y)
         }
         const timeout = setTimeout(() => {
-            dispararRandom(tableroMarca)
-        }, 3000);
+            dispararRandom(tableroRival)
+        }, 1000);
 
         return () => clearTimeout(timeout)
     }, [turno,fase])
