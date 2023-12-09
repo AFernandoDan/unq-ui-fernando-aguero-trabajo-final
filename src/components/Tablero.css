@@ -1,6 +1,6 @@
 :root {
-    --casilla-size: clamp(1.5rem, 2vw, 2.5vw);
-    --casilla-gap: clamp(0.75rem, 1vw, 1rem);
+    --casilla-size: clamp(1.4rem, 2vw, 2.5vw);
+    --casilla-gap: clamp(0.5rem, 1vw, 1rem);
 }
 
 .letras, .numeros, .tablero, .tablero-container {
@@ -15,7 +15,6 @@
     grid-template-areas: 
         "nada letras"
         "numeros tablero";
-    margin: 2rem;
 }
 
 .tablero {
@@ -54,4 +53,16 @@
     justify-content: center;
     flex-wrap: wrap;
     max-width: auto;
+}
+
+.tableros > div {
+    margin-bottom: 2rem;
+}
+
+@media screen {
+    @media (min-width: 650px) {
+        .tableros > div {
+            margin-right: 2rem;
+        }
+    }
 }
