@@ -16,8 +16,8 @@ const getCasillaBarcoClass = (tipoBarco) => {
             return "submarino "
         case TIPO_BARCO.LANCHA:
             return "lancha "
-        case TIPO_BARCO.FRAGATA:
-            return "fragata "
+        case TIPO_BARCO.CRUCERO:
+            return "crucero "
     }
 }
 

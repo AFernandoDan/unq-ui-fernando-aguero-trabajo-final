@@ -5,9 +5,9 @@ import TIPO_CASILLA from "../model/tipoCasilla"
 import { parsePos } from "../helpers/position"
 
 const barcosIniciales = [
-    {tipoBarco: TIPO_BARCO.PORTAAVIONES, longitud: 4, colocado: false},
-    {tipoBarco: TIPO_BARCO.SUBMARINO, longitud: 4, colocado: false},
-    {tipoBarco: TIPO_BARCO.FRAGATA, longitud: 4, colocado: false},
+    {tipoBarco: TIPO_BARCO.PORTAAVIONES, longitud: 5, colocado: false},
+    {tipoBarco: TIPO_BARCO.SUBMARINO, longitud: 3, colocado: false},
+    {tipoBarco: TIPO_BARCO.CRUCERO, longitud: 4, colocado: false},
     {tipoBarco: TIPO_BARCO.LANCHA, longitud: 2, colocado: false},
 ]
 

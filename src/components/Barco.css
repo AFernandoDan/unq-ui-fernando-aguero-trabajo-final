@@ -4,7 +4,7 @@
     --portaaviones: orange;
     --submarino: forestgreen;
     --lancha: crimson;
-    --fragata: darkorchid;
+    --crucero: darkorchid;
     --barco-tocado: #fafafa;
     --barco-hundido: black;
 }
@@ -16,7 +16,7 @@
     background-color: var(--agua-sin-tocar);
 }
 
-.portaaviones, .submarino, .lancha, .fragata, .agua {
+.portaaviones, .submarino, .lancha, .crucero, .agua {
     position: relative;
 }
 
@@ -32,15 +32,15 @@
     background-color: var(--lancha);
 }
 
-.fragata {
-    background-color: var(--fragata);
+.crucero {
+    background-color: var(--crucero);
 }
 
 .agua.tocado {
     background-color: var(--agua-tocado);
 }
 
-.portaaviones.tocado::after, .submarino.tocado::after, .lancha.tocado::after, .fragata.tocado::after {
+.portaaviones.tocado::after, .submarino.tocado::after, .lancha.tocado::after, .crucero.tocado::after {
     content: "";
     position: absolute;
     width: 45%;
@@ -77,8 +77,8 @@
     color: var(--lancha);
 }
 
-.radio-barco.fragata {
-    color: var(--fragata);
+.radio-barco.crucero {
+    color: var(--crucero);
 }
 
 .radio-barco {

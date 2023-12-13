@@ -1,7 +1,7 @@
 const TIPO_BARCO = {
     PORTAAVIONES: "Portaaviones",
     SUBMARINO: "Submarino",
-    FRAGATA: "Fragata",
+    CRUCERO: "Crucero",
     LANCHA: "Lancha Torpedera"
 }
 
